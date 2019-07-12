@@ -1,13 +1,34 @@
-body {
+* {
+  box-sizing: border-box;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+.App {
+  text-align: center;
+}
+.App img {
+  object-fit: contain;
+  border: 1px solid black;
+  background-color: #dddbf1;
+}
+.hide {
+  display: none;
+}
+.Bolt {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  transition: 0.5s;
+  z-index: 1000;
+}
+.Black {
+  background-color: black;
+}
+.White {
+  background-color: white;
 }
