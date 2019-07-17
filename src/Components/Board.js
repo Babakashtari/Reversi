@@ -3,13 +3,14 @@ import Bolt from "./Bolt";
 
 class Board extends Component {
   state = {
-    playerNames: ["", ""],
+    playerNames: ["Player1", "Player2"],
     rows: ["A", "B", "C", "D", "E", "F", "G", "H"],
     columns: [1, 2, 3, 4, 5, 6, 7, 8],
     // variable that change bolt colors according to players' turn:
     move: true,
     // color classes should begin with capital letter for their css classes to be functional:
     color: ["Black", "White"],
+    color_number: [2, 2],
     currentColor: "Black",
     // index of the last column cells used in calculation for horizontal bolt taking:
     lastColumn: [7, 15, 23, 31, 39, 47, 55, 63],
@@ -26,7 +27,21 @@ class Board extends Component {
     // prettier-ignore
     top_right_to_Bottom_left_obliqueRowsFirstCells: [0, 1, 2, 3, 4, 5, 6, 7, 15, 23, 31, 39, 47, 55, 63]
   };
-
+  componentWillMount() {
+    // getting the players' name:
+    const player_One = prompt(
+      "Welcome player 1 ! What should we call you?",
+      this.state.color[0]
+    );
+    const player_two = prompt(
+      "Welcome player 2. What should we call you?",
+      this.state.color[1]
+    );
+    if (player_One !== "" && player_two !== "") {
+      const players_array = [player_One, player_two];
+      this.setState({ playerNames: players_array });
+    }
+  }
   componentDidMount() {
     const Allcells = document.getElementsByTagName("td");
     // centered cells' index which should be always filled with bolts at the beginning of the game:
@@ -932,6 +947,7 @@ class Board extends Component {
     }
   };
   componentDidUpdate(PrevProps, PrevState) {
+    // how to change the color of the bolts:
     const AllcellsBolts = document.getElementsByTagName("span");
     for (let i = 0; i < AllcellsBolts.length; i++) {
       if (AllcellsBolts[i].classList.contains(PrevState.color[0])) {
@@ -942,12 +958,16 @@ class Board extends Component {
         AllcellsBolts[i].classList.add(this.state.color[1]);
       }
     }
-
-    console.log("Previous color is: " + PrevState.color[1]);
-    console.log("current color is: " + this.state.color[1]);
   }
 
   render() {
+    // styling the players bolt number section:
+    const player_one = {
+      color: this.state.color[1]
+    };
+    const player_two = {
+      color: this.state.color[0]
+    };
     return (
       <React.Fragment>
         <section style={{ display: "flex", justifyContent: "center" }}>
@@ -994,9 +1014,26 @@ class Board extends Component {
             </tbody>
           </table>
         </section>
-        <section style={{ border: "3px solid black", padding: "1rem" }}>
+        <section
+          className="container"
+          style={{
+            backgroundColor: "gray",
+            border: "3px solid black",
+            padding: "1rem",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-around"
+          }}
+        >
+          <div>
+            <h4>{this.state.playerNames[0]}</h4>
+            <p style={player_two}>
+              Number of bolts: {this.state.color_number[1]}
+            </p>
+          </div>
           <div>
             <select
+              style={{ textAlign: "center", width: "25rem" }}
               multiple={true}
               name="bolt_color"
               id="colorizer"
@@ -1008,6 +1045,12 @@ class Board extends Component {
               <option value="['Green', 'Yellow']">Green and Yellow</option>
               <option value="['Violet', 'Brown']">Violet and Brown</option>
             </select>
+          </div>
+          <div>
+            <h4>{this.state.playerNames[1]}</h4>
+            <p style={player_one}>
+              Number of bolts: {this.state.color_number[0]}
+            </p>
           </div>
         </section>
       </React.Fragment>
