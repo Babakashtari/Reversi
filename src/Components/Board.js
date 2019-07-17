@@ -3,8 +3,7 @@ import Bolt from "./Bolt";
 
 class Board extends Component {
   state = {
-    // all cells in the board:
-    cells: [],
+    playerNames: ["", ""],
     rows: ["A", "B", "C", "D", "E", "F", "G", "H"],
     columns: [1, 2, 3, 4, 5, 6, 7, 8],
     // variable that change bolt colors according to players' turn:
@@ -913,52 +912,105 @@ class Board extends Component {
     }
   };
 
+  // how the bolts' color is changed in the state:
+  changeColor = event => {
+    // the returned value is a string ex: '["Black", "White"]'
+    const returnedValue = event.target.value;
+    // split the string from " ' " so that it will be something like : [ "[" , "Red" , "," , "Blue" , "]" ]
+    const string_of_colors = returnedValue.split("'");
+    // putting the two colors according to their index to an array:
+    const array_of_colors = [];
+    array_of_colors.push(string_of_colors[1]);
+    array_of_colors.push(string_of_colors[3]);
+
+    // changing the bolts that are already in place on the board:
+    if (this.state.color !== array_of_colors) {
+      this.setState({
+        color: array_of_colors,
+        currentColor: array_of_colors[0]
+      });
+    }
+  };
+  componentDidUpdate(PrevProps, PrevState) {
+    const AllcellsBolts = document.getElementsByTagName("span");
+    for (let i = 0; i < AllcellsBolts.length; i++) {
+      if (AllcellsBolts[i].classList.contains(PrevState.color[0])) {
+        AllcellsBolts[i].classList.remove(PrevState.color[0]);
+        AllcellsBolts[i].classList.add(this.state.color[0]);
+      } else if (AllcellsBolts[i].classList.contains(PrevState.color[1])) {
+        AllcellsBolts[i].classList.remove(PrevState.color[1]);
+        AllcellsBolts[i].classList.add(this.state.color[1]);
+      }
+    }
+
+    console.log("Previous color is: " + PrevState.color[1]);
+    console.log("current color is: " + this.state.color[1]);
+  }
+
   render() {
     return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <table
-          style={{
-            backgroundColor: "green",
-            color: "white"
-          }}
-          className="Board m-3"
-        >
-          <tbody>
-            {this.state.rows.map((item, index) => {
-              const rowName = this.state.rows[index];
-              return (
-                <tr key={rowName} ref={rowName}>
-                  {this.state.columns.map((item, index) => {
-                    const columnName = this.state.columns[index];
-                    const cellName = rowName + columnName;
-                    return (
-                      <td
-                        onClick={this.checker}
-                        style={{
-                          cursor: "pointer",
-                          border: "3px solid white",
-                          height: "80px",
-                          width: "80px",
-                          position: "relative",
-                          left: 0,
-                          top: 0,
-                          right: 0,
-                          bottom: 0
-                        }}
-                        key={cellName}
-                        ref={cellName}
-                      >
-                        <Bolt />
-                        {cellName}
-                      </td>
-                    );
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+      <React.Fragment>
+        <section style={{ display: "flex", justifyContent: "center" }}>
+          <table
+            style={{
+              backgroundColor: "green",
+              color: "white"
+            }}
+            className="Board m-3"
+          >
+            <tbody>
+              {this.state.rows.map((item, index) => {
+                const rowName = this.state.rows[index];
+                return (
+                  <tr key={rowName} ref={rowName}>
+                    {this.state.columns.map((item, index) => {
+                      const columnName = this.state.columns[index];
+                      const cellName = rowName + columnName;
+                      return (
+                        <td
+                          onClick={this.checker}
+                          style={{
+                            cursor: "pointer",
+                            border: "3px solid white",
+                            height: "80px",
+                            width: "80px",
+                            position: "relative",
+                            left: 0,
+                            top: 0,
+                            right: 0,
+                            bottom: 0
+                          }}
+                          key={cellName}
+                          ref={cellName}
+                        >
+                          <Bolt />
+                          {cellName}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </section>
+        <section style={{ border: "3px solid black", padding: "1rem" }}>
+          <div>
+            <select
+              multiple={true}
+              name="bolt_color"
+              id="colorizer"
+              value={this.state.color}
+              onChange={this.changeColor}
+            >
+              <option value="['Black', 'White']">Black and White</option>
+              <option value="['Red', 'Blue']">Red and Blue</option>
+              <option value="['Green', 'Yellow']">Green and Yellow</option>
+              <option value="['Violet', 'Brown']">Violet and Brown</option>
+            </select>
+          </div>
+        </section>
+      </React.Fragment>
     );
   }
 }
