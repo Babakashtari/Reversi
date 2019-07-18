@@ -42,6 +42,7 @@ class Board extends Component {
       this.setState({ playerNames: players_array });
     }
   }
+  // placing the four centered bolts at the middle of the board:
   componentDidMount() {
     const Allcells = document.getElementsByTagName("td");
     // centered cells' index which should be always filled with bolts at the beginning of the game:
@@ -62,8 +63,9 @@ class Board extends Component {
       boolean = !boolean;
     });
   }
+
+  // ----- Check if the player has chosen the right cell -----
   checker = e => {
-    // ----- Check if the player has chosen the right cell -----
     const first = this.first(e);
     const second = this.second(e);
     const third = this.third(e);
@@ -75,6 +77,7 @@ class Board extends Component {
 
     // prettier-ignore
     if (first || second || third || fourth || fifth || sixth || seventh || eighth) {
+      // if at least one of the 8 direction checks returns "true" then the move is considered to be valid:
       this.clicking(e);
     }
   };
@@ -925,6 +928,24 @@ class Board extends Component {
         }
       }
     }
+    // calling a function which will check the number of each color bolt:
+    this.number();
+  };
+
+  // a function which will check the number of each color bolt:
+  number = () => {
+    let first_number = 0;
+    let second_number = 0;
+    const Allcells = document.getElementsByTagName("span");
+    for (let i = 0; i < Allcells.length; i++) {
+      if (Allcells[i].classList.contains(this.state.color[0])) {
+        second_number += 1;
+      } else if (Allcells[i].classList.contains(this.state.color[1])) {
+        first_number += 1;
+      }
+    }
+    const number_of_bolts = [first_number, second_number];
+    this.setState({ color_number: number_of_bolts });
   };
 
   // how the bolts' color is changed in the state:
@@ -941,9 +962,13 @@ class Board extends Component {
     // changing the bolts that are already in place on the board:
     if (this.state.color !== array_of_colors) {
       this.setState({
-        color: array_of_colors,
-        currentColor: array_of_colors[0]
+        color: array_of_colors
       });
+    }
+    if (this.state.move) {
+      this.setState({ currentColor: array_of_colors[0] });
+    } else {
+      this.setState({ currentColor: array_of_colors[1] });
     }
   };
   componentDidUpdate(PrevProps, PrevState) {
