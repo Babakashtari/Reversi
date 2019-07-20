@@ -293,6 +293,9 @@ class Board extends Component {
         .classList.contains(this.state.currentColor)
     ) {
       for (let l = i + 8; l <= lastrowIndex; l += 8) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
         if (
           Allcells[l]
             .querySelector("span")
@@ -361,6 +364,9 @@ class Board extends Component {
         .classList.contains(this.state.currentColor)
     ) {
       for (let l = i - 8; l >= firstrowIndex; l -= 8) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
         if (
           Allcells[l]
             .querySelector("span")
@@ -447,6 +453,9 @@ class Board extends Component {
         .classList.contains(this.state.currentColor)
     ) {
       for (let l = i + 9; l <= selected_oblique_lastCell; l += 9) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
         if (
           Allcells[l]
             .querySelector("span")
@@ -532,6 +541,9 @@ class Board extends Component {
         .classList.contains(this.state.currentColor)
     ) {
       for (let l = i - 9; l >= selected_oblique_FirstCell; l -= 9) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
         if (
           Allcells[l]
             .querySelector("span")
@@ -618,6 +630,9 @@ class Board extends Component {
         .classList.contains(this.state.currentColor)
     ) {
       for (let l = i + 7; l <= selected_oblique_lastCell; l += 7) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
         if (
           Allcells[l]
             .querySelector("span")
@@ -706,6 +721,9 @@ class Board extends Component {
         .classList.contains(this.state.currentColor)
     ) {
       for (let l = i - 7; l >= selected_oblique_FirstCell; l -= 7) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
         if (
           Allcells[l]
             .querySelector("span")
