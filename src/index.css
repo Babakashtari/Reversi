@@ -26,6 +26,9 @@
   transition: 0.5s;
   z-index: 1000;
 }
+.possible_moves {
+  animation: glow 3000ms infinite linear;
+}
 .Black {
   background-color: black;
 }
@@ -49,4 +52,41 @@
 }
 .Brown {
   background-color: brown;
+}
+
+@keyframes glow {
+  0% {
+    background-color: green;
+  }
+  10% {
+    background-color: blue;
+  }
+  20% {
+    background-color: purple;
+  }
+
+  30% {
+    background-color: red;
+  }
+  40% {
+    background-color: brown;
+  }
+  50% {
+    background-color: green;
+  }
+  60% {
+    background-color: brown;
+  }
+  70% {
+    background-color: red;
+  }
+  80% {
+    background-color: purple;
+  }
+  90% {
+    background-color: blue;
+  }
+  100% {
+    background-color: green;
+  }
 }

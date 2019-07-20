@@ -62,8 +62,28 @@ class Board extends Component {
       }
       boolean = !boolean;
     });
+    this.possibleMoveChecker();
   }
-
+  possibleMoveChecker = () => {
+    // highlight the possible moves of each player:
+    const Allcells = document.getElementsByTagName("td");
+    const AllcellsBolts = document.getElementsByTagName("span");
+    for (let i = 0; i < Allcells.length; i++) {
+      if (Allcells[i].classList.contains("possible_moves")) {
+        Allcells[i].classList.remove("possible_moves");
+      }
+      if (AllcellsBolts[i].classList.contains("hide")) {
+        this.firstPossibleMove(i);
+        this.secondPossibleMove(i);
+        this.thirdPossibleMove(i);
+        this.fourthPossibleMove(i);
+        this.fifthPossibleMove(i);
+        this.sixthPossibleMove(i);
+        this.seventhPossibleMove(i);
+        this.eighthPossibleMove(i);
+      }
+    }
+  };
   // ----- Check if the player has chosen the right cell -----
   checker = e => {
     const first = this.first(e);
@@ -83,8 +103,8 @@ class Board extends Component {
   };
   first = e => {
     // horizontally from left to right:
-    const boltCell = e.currentTarget;
     const Allcells = document.getElementsByTagName("td");
+    const boltCell = e.currentTarget;
     for (let i = 0; i < Allcells.length; i++) {
       // selecting the clicked cell in Allcells array:
       if (Allcells[i] === boltCell) {
@@ -117,11 +137,43 @@ class Board extends Component {
     }
     return false;
   };
+  firstPossibleMove = i => {
+    // horizontally from left to right:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const lastcolumnIndex = this.state.lastColumn.find(item => {
+      return item >= i;
+    });
+    if (
+      i !== lastcolumnIndex &&
+      !Allcells[i + 1].querySelector("span").classList.contains("hide") &&
+      !Allcells[i + 1]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i + 1; l <= lastcolumnIndex; l++) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i + 1
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
   second = e => {
     // horizontally from right to left:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
 
     for (let i = 0; i < Allcells.length; i++) {
       if (Allcells[i] === boltCell) {
@@ -154,11 +206,43 @@ class Board extends Component {
     }
     return false;
   };
+  secondPossibleMove = i => {
+    // horizontally from right to left:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const firstcolumnIndex = this.state.firstColumn.find(item => {
+      return item <= i;
+    });
+    if (
+      i !== firstcolumnIndex &&
+      !Allcells[i - 1].querySelector("span").classList.contains("hide") &&
+      !Allcells[i - 1]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i - 1; l >= firstcolumnIndex; l--) {
+        if (Allcells[l].querySelector("span").classList.contains("hide")) {
+          break;
+        }
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i - 1
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
   third = e => {
     // vertically from top to bottom:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
     const emptyLastArr = [];
 
     for (let i = 0; i < Allcells.length; i++) {
@@ -189,11 +273,44 @@ class Board extends Component {
     }
     return false;
   };
+  thirdPossibleMove = i => {
+    // vertically from top to bottom:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const emptyLastArr = [];
+    for (let l = i; l <= 63; l += 8) {
+      emptyLastArr.push(l);
+    }
+    const lastrowIndex = emptyLastArr.pop();
+    if (
+      // Allcells[i].classList.contains("hide") &&
+      i !== lastrowIndex &&
+      !Allcells[i + 8].querySelector("span").classList.contains("hide") &&
+      !Allcells[i + 8]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i + 8; l <= lastrowIndex; l += 8) {
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i + 8
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
+
   fourth = e => {
     // vertically from bottom to top:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
     const emptyFirstArr = [];
 
     for (let i = 0; i < Allcells.length; i++) {
@@ -224,11 +341,44 @@ class Board extends Component {
     }
     return false;
   };
+  fourthPossibleMove = i => {
+    // vertically from bottom to top:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const emptyFirstArr = [];
+    for (let l = i; l >= 0; l -= 8) {
+      emptyFirstArr.push(l);
+    }
+    const firstrowIndex = emptyFirstArr.pop();
+    if (
+      // Allcells[i].classList.contains("hide") &&
+      i !== firstrowIndex &&
+      !Allcells[i - 8].querySelector("span").classList.contains("hide") &&
+      !Allcells[i - 8]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i - 8; l >= firstrowIndex; l -= 8) {
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i - 8
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
+
   fifth = e => {
     // slantwise from top left to bottom right:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
     const lastCells_array = [];
     for (let i = 0; i < Allcells.length; i++) {
       if (Allcells[i] === boltCell) {
@@ -268,11 +418,52 @@ class Board extends Component {
     }
     return false;
   };
+  fifthPossibleMove = i => {
+    // slantwise from top left to bottom right:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const lastCells_array = [];
+    for (let l = i; l <= 63; l += 9) {
+      // taking the 2 values of last cells in both X and Y axis:
+      const array_value = this.state.top_left_to_Bottom_right_obliqueRowsLastCells.find(
+        item => {
+          return item === l;
+        }
+      );
+      // pushing the 2 returned values to an empty array:
+      if (array_value !== undefined) {
+        lastCells_array.push(array_value);
+      }
+    }
+    // shifting the first value of the array
+    const selected_oblique_lastCell = lastCells_array.shift();
+    if (
+      i !== selected_oblique_lastCell &&
+      !Allcells[i + 9].querySelector("span").classList.contains("hide") &&
+      !Allcells[i + 9]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i + 9; l <= selected_oblique_lastCell; l += 9) {
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i + 9
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
   sixth = e => {
     // slantwise from bottom right to top left:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
     for (let i = 0; i < Allcells.length; i++) {
       if (Allcells[i] === boltCell) {
         const lastCells_array = [];
@@ -312,11 +503,53 @@ class Board extends Component {
     }
     return false;
   };
+  sixthPossibleMove = i => {
+    // slantwise from bottom right to top left:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const lastCells_array = [];
+    for (let l = i; l >= 0; l -= 9) {
+      // taking the 2 values of last cells in both X and Y axis:
+      const array_value = this.state.top_left_to_Bottom_right_obliqueRowsFirstCells.find(
+        item => {
+          return item === l;
+        }
+      );
+      // pushing the 2 returned values to an empty array:
+      if (array_value !== undefined) {
+        lastCells_array.push(array_value);
+      }
+    }
+    // shifting the first value of the array
+    const selected_oblique_FirstCell = lastCells_array.shift();
+    if (
+      i !== selected_oblique_FirstCell &&
+      !Allcells[i - 9].querySelector("span").classList.contains("hide") &&
+      !Allcells[i - 9]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i - 9; l >= selected_oblique_FirstCell; l -= 9) {
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i - 9
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
+
   seventh = e => {
     // slantwise from top right to bottom left:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
     for (let i = 0; i < Allcells.length; i++) {
       if (Allcells[i] === boltCell) {
         const lastCells_array = [];
@@ -356,12 +589,53 @@ class Board extends Component {
     }
     return false;
   };
+  seventhPossibleMove = i => {
+    // slantwise from top right to bottom left:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const lastCells_array = [];
+    for (let l = i; l <= 63; l += 7) {
+      // taking the 2 values of last cells in both X and Y axis:
+      const array_value = this.state.top_right_to_Bottom_left_obliqueRowsLastCells.find(
+        item => {
+          return item === l;
+        }
+      );
+      // pushing the 2 returned values to an empty array:
+      if (array_value !== undefined) {
+        lastCells_array.push(array_value);
+      }
+    }
+    // shifting the first value of the array
+    const selected_oblique_lastCell = lastCells_array.shift();
+    if (
+      i !== selected_oblique_lastCell &&
+      !Allcells[i + 7].querySelector("span").classList.contains("hide") &&
+      !Allcells[i + 7]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i + 7; l <= selected_oblique_lastCell; l += 7) {
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i + 7
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return;
+  };
   eighth = e => {
     // slantwise from bottom left to top right:
+    const Allcells = document.getElementsByTagName("td");
     const boltCell = e.currentTarget;
 
     // an array of all td elements on the board:
-    const Allcells = document.getElementsByTagName("td");
 
     for (let i = 0; i < Allcells.length; i++) {
       if (Allcells[i] === boltCell) {
@@ -403,7 +677,47 @@ class Board extends Component {
 
     return false;
   };
-
+  eighthPossibleMove = i => {
+    // slantwise from bottom left to top right:
+    const Allcells = document.getElementsByTagName("td");
+    if (Allcells[i].classList.contains("possible_moves")) {
+      return;
+    }
+    const lastCells_array = [];
+    for (let l = i; l >= 0; l -= 7) {
+      // taking the 2 values of last cells in both X and Y axis:
+      const array_value = this.state.top_right_to_Bottom_left_obliqueRowsFirstCells.find(
+        item => {
+          return item === l;
+        }
+      );
+      // pushing the 2 returned values to an empty array:
+      if (array_value !== undefined) {
+        lastCells_array.push(array_value);
+      }
+    }
+    // shifting the first value of the array
+    const selected_oblique_FirstCell = lastCells_array.shift();
+    if (
+      i !== selected_oblique_FirstCell &&
+      !Allcells[i - 7].querySelector("span").classList.contains("hide") &&
+      !Allcells[i - 7]
+        .querySelector("span")
+        .classList.contains(this.state.currentColor)
+    ) {
+      for (let l = i - 7; l >= selected_oblique_FirstCell; l -= 7) {
+        if (
+          Allcells[l]
+            .querySelector("span")
+            .classList.contains(this.state.currentColor) &&
+          l !== i - 7
+        ) {
+          Allcells[i].classList.add("possible_moves");
+        }
+      }
+    }
+    return false;
+  };
   clicking = e => {
     // bolt selector:
     const bolt = e.currentTarget.querySelector("span");
@@ -930,6 +1244,9 @@ class Board extends Component {
     }
     // calling a function which will check the number of each color bolt:
     this.number();
+    setTimeout(() => {
+      this.possibleMoveChecker();
+    }, 1);
   };
 
   // a function which will check the number of each color bolt:
